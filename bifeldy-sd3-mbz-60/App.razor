@@ -1,0 +1,13 @@
+﻿<Router AppAssembly="@typeof(App).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(FoundLayout)" />
+    </Found>
+    <NotFound>
+        <PageTitle>Not Found</PageTitle>
+        <LayoutView Layout="@typeof(NotFoundLayout)">
+            <div class="ma-3 pa-3" role="alert">
+                Whoops, spertinya halaman yang kamu cari tidak tersedia.
+            </div>
+        </LayoutView>
+    </NotFound>
+</Router>

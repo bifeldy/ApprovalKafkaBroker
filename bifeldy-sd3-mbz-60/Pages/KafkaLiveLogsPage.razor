@@ -1,0 +1,85 @@
+﻿@page "/kafka-live-logs"
+
+@implements IDisposable
+
+@using System.Reactive
+@using System.Reactive.Linq
+@using System.Reactive.Subjects
+
+@using Confluent.Kafka
+
+@using bifeldy_sd3_lib_60.Models
+@using bifeldy_sd3_lib_60.Services
+
+@inject IConfiguration _config
+@inject IApplicationService _app
+@inject IPubSubService _pubSub
+
+
+<PageTitle>Kafka live logs</PageTitle>
+
+<MudPaper Square="true" Class="px-0" Style="background: purple; height: 64px;" />
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="py-5 px-5">
+
+    <MudText Typo="Typo.h3" GutterBottom="true">
+        Kafka live logs
+        <MudText Typo="Typo.h5" GutterBottom="true">
+            @KAFKA_CONSUMER_NAME
+        </MudText>
+    </MudText>
+
+    @if (lskf == null) {
+        <MudText Class="my-8">
+            Topic not found.
+        </MudText>
+    }
+    else {
+        <MudProgressLinear Color="Color.Secondary" Indeterminate="true" Class="my-8" />
+        @foreach (var km in lskf.OrderByDescending(d => d.Timestamp.UtcDateTime)) {
+            <MudText Class="my-8">
+                [@km.Timestamp.UtcDateTime] @km.Key :: @km.Value.ToString()
+            </MudText>
+        }
+    }
+
+</MudContainer>
+
+
+@code {
+
+    private IDisposable kafkaConsumerSubs = null;
+
+    private List<Message<string, dynamic>> lskf = null;
+
+    //
+    // Ngikut sama yang ada di Program.cs
+    //
+    // Bifeldy.AddKafkaConsumerBackground("172.31.2.122:9092", "bias_uji_coba");
+    // private static string KAFKA_CONSUMER_NAME = $"KAFKA_CONSUMER_172.31.2.122:9092#{"bias_uji_coba".ToUpper()}";
+    //
+    // Atau ambil yang di appsettings.json
+    //
+    private static string KAFKA_CONSUMER_NAME = $"KAFKA_CONSUMER_WEB_APPROVAL_GXXX";
+
+    protected override void OnInitialized() {
+        if (kafkaConsumerSubs == null && _pubSub.IsExist(KAFKA_CONSUMER_NAME)) {
+            if (lskf == null) {
+                lskf = new List<Message<string, dynamic>>();
+            }
+            kafkaConsumerSubs = _pubSub
+                .GetGlobalAppBehaviorSubject<Message<string, dynamic>>(KAFKA_CONSUMER_NAME)
+                .Subscribe(async data => {
+                    if (data != null) {
+                        lskf.Add(data);
+                        await base.InvokeAsync(base.StateHasChanged);
+                    }
+                });
+        }
+    }
+
+    public void Dispose() {
+        kafkaConsumerSubs?.Dispose();
+    }
+
+}

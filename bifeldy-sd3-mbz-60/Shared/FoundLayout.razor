@@ -1,0 +1,88 @@
+﻿@inherits LayoutComponentBase
+
+@implements IDisposable
+
+@using bifeldy_sd3_lib_60.Repositories
+@using bifeldy_sd3_lib_60.Services
+
+@inject IJSRuntime _js
+@inject NavigationManager _nm
+
+@inject ILogger<FoundLayout> _logger
+@inject IApplicationService _app
+@inject IGeneralRepository _generalRepo
+
+
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Elevation="0">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudText>@_pageTitle</MudText>
+        <MudSpacer />
+        <MudIconButton Icon="@Icons.Custom.Brands.MudBlazor" Color="Color.Inherit" Href="https://mudblazor.com/" Target="_blank" />
+        <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Href="https://github.com/MudBlazor/MudBlazor/" Target="_blank" />
+    </MudAppBar>
+    <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
+        <MudDrawerHeader Class="mud-theme-primary" Style="align-items: center;">
+                <MudText Typo="Typo.h6">@_appName</MudText>
+        </MudDrawerHeader>
+        <NavMenu />
+    </MudDrawer>
+    <MudMainContent Class="mb-8">@Body</MudMainContent>
+    <MudAppBar Bottom="true" Elevation="0" Dense="true" Style="max-height: 32px;">
+        <MudText>
+            <small>@_app.AppName - v@_app.AppVersion</small>
+        </MudText>
+        <MudSpacer />
+        <MudText>
+            <small>@_kodeDc</small>
+        </MudText>
+    </MudAppBar>
+</MudLayout>
+
+
+<script>
+    function getDocumentTitle() {
+        return document.title;
+    }
+    function setDocumentTitle(headTitle) {
+        return document.title = headTitle;
+    }
+</script>
+
+
+    @code {
+
+    string _appName = string.Empty;
+    string _kodeDc = string.Empty;
+    string _pageTitle = "Index";
+
+    bool _drawerOpen = true;
+
+    protected override async void OnInitialized() {
+        _nm.LocationChanged += OnLocationChanged;
+        _kodeDc = await _generalRepo.GetKodeDc(); ;
+        _appName = _app.AppName.Substring(0, 10) + "... - " + _kodeDc;
+    }
+
+    public void Dispose() {
+        _nm.LocationChanged -= OnLocationChanged;
+    }
+
+    private async void OnLocationChanged(object sender, LocationChangedEventArgs args) {
+        if (args.IsNavigationIntercepted) {
+            // Navigated From HTML (eg. href="", document.window.location="")
+        }
+        _pageTitle = await _js.InvokeAsync<string>("getDocumentTitle");
+        await _js.InvokeVoidAsync("setDocumentTitle", $"{_pageTitle} | {_app.AppName}");
+        base.StateHasChanged();
+    }
+
+    void DrawerToggle() {
+        _drawerOpen = !_drawerOpen;
+    }
+
+}
