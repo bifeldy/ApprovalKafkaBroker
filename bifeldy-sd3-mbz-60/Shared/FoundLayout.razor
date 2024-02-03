@@ -76,16 +76,20 @@
         if (args.IsNavigationIntercepted) {
             // Navigated From HTML (eg. href="", document.window.location="")
         }
-        string documentTitle = await _js.InvokeAsync<string>("getDocumentTitle");
-        if (documentTitle != _pageTitle) {
-            documentTitle = _pageTitle;
-            await _js.InvokeVoidAsync("setDocumentTitle", $"{_pageTitle} | {_app.AppName}");
-        }
+        await ChangePageTitle();
         base.StateHasChanged();
     }
 
-    void DrawerToggle() {
+    private void DrawerToggle() {
         _drawerOpen = !_drawerOpen;
+    }
+
+    private async Task ChangePageTitle() {
+        string oldDocumentTitle = await _js.InvokeAsync<string>("getDocumentTitle");
+        if ($"{_pageTitle} | {_app.AppName}" != oldDocumentTitle) {
+            _pageTitle = oldDocumentTitle;
+            await _js.InvokeVoidAsync("setDocumentTitle", $"{_pageTitle} | {_app.AppName}");
+        }
     }
 
 }
