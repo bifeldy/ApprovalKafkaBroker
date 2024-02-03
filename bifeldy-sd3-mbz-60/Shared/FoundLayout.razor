@@ -54,7 +54,7 @@
 </script>
 
 
-    @code {
+@code {
 
     string _appName = string.Empty;
     string _kodeDc = string.Empty;
@@ -76,8 +76,11 @@
         if (args.IsNavigationIntercepted) {
             // Navigated From HTML (eg. href="", document.window.location="")
         }
-        _pageTitle = await _js.InvokeAsync<string>("getDocumentTitle");
-        await _js.InvokeVoidAsync("setDocumentTitle", $"{_pageTitle} | {_app.AppName}");
+        string documentTitle = await _js.InvokeAsync<string>("getDocumentTitle");
+        if (documentTitle != _pageTitle) {
+            documentTitle = _pageTitle;
+            await _js.InvokeVoidAsync("setDocumentTitle", $"{_pageTitle} | {_app.AppName}");
+        }
         base.StateHasChanged();
     }
 
