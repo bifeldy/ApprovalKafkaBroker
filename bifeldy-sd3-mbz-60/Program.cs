@@ -55,7 +55,7 @@ builder.Services.AddMudServices();
 builder.Services.AddHttpContextAccessor();
 
 // Tambah Dependency Injection Di Sini --
-Bifeldy.SetupDI();
+Bifeldy.AddDependencyInjection();
 builder.Services.AddSingleton<WeatherForecastService>();
 
 // Background Hosted Service Long Run Task Di Sini --
