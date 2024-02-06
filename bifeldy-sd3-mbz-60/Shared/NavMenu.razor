@@ -12,27 +12,33 @@
             </MudNavLink>
         </Authorized>
         <NotAuthorized>
-            <MudNavLink Href="login" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Login">
+            <MudNavLink Href="/login" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Login">
                 Masuk
             </MudNavLink>
         </NotAuthorized>
     </AuthorizeView>
+    <MudDivider />
     <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">
-        Home
+        Index Beranda
     </MudNavLink>
-    <MudNavLink Href="counter" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">
-        Counter
-    </MudNavLink>
-    <MudNavLink Href="weather-forecast" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">
-        Weather Forecast
-    </MudNavLink>
+    <MudNavGroup Title="Default Blazor Menu" Expanded="true" Icon="@Icons.Material.Filled.More">
+        <MudNavLink Href="/counter" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">
+            Counter
+        </MudNavLink>
+        <MudNavLink Href="/weather-forecast" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">
+            Weather Forecast
+        </MudNavLink>
+    </MudNavGroup>
     <AuthorizeView Roles="USER">
         <Authorized>
-            <MudNavLink Href="kafka-live-logs" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.ElectricalServices">
+            <MudNavLink Href="/kafka-live-logs" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.ElectricalServices">
                 Kafka Live Logs
             </MudNavLink>
         </Authorized>
     </AuthorizeView>
+    <MudNavLink Href="/api" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Api">
+        Swagger Api Docs
+    </MudNavLink>
 </MudNavMenu>
 
 
