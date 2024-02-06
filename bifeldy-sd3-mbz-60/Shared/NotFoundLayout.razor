@@ -4,7 +4,7 @@
 
 @using Microsoft.AspNetCore.Http
 
-@inject IHttpContextAccessor _httpContextAccessor
+@inject IHttpContextAccessor _hca
 
 @{
     base.BuildRenderTree(__builder);
@@ -13,8 +13,9 @@
 @code {
 
     protected override void OnInitialized() {
-        if (_httpContextAccessor.HttpContext != null && !_httpContextAccessor.HttpContext.Response.HasStarted) {
-            _httpContextAccessor.HttpContext.Response.StatusCode = (int) HttpStatusCode.NotFound;
+        base.OnInitialized();
+        if (_hca.HttpContext != null && !_hca.HttpContext.Response.HasStarted) {
+            _hca.HttpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
         }
     }
 

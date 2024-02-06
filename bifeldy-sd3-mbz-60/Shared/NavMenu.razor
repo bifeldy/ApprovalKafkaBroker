@@ -1,5 +1,23 @@
-﻿<MudNavMenu>
-    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">
+﻿@using bifeldy_sd3_lib_60.Repositories
+
+@inject NavigationManager _nm
+
+@inject IUserRepository _userRepo
+
+<MudNavMenu>
+    <AuthorizeView>
+        <Authorized>
+            <MudNavLink Icon="@Icons.Material.Filled.Logout" OnClick="Logout">
+                Keluar
+            </MudNavLink>
+        </Authorized>
+        <NotAuthorized>
+            <MudNavLink Href="login" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Login">
+                Masuk
+            </MudNavLink>
+        </NotAuthorized>
+    </AuthorizeView>
+    <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">
         Home
     </MudNavLink>
     <MudNavLink Href="counter" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">
@@ -8,7 +26,21 @@
     <MudNavLink Href="weather-forecast" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">
         Weather Forecast
     </MudNavLink>
-    <MudNavLink Href="kafka-live-logs" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.ElectricalServices">
-        Kafka Live Logs
-    </MudNavLink>
+    <AuthorizeView Roles="USER">
+        <Authorized>
+            <MudNavLink Href="kafka-live-logs" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.ElectricalServices">
+                Kafka Live Logs
+            </MudNavLink>
+        </Authorized>
+    </AuthorizeView>
 </MudNavMenu>
+
+
+@code {
+
+    private async Task Logout() {
+        await _userRepo.LogoutUser();
+        _nm.NavigateTo("/");
+    }
+
+}

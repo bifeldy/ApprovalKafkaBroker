@@ -7,7 +7,18 @@
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="py-5 px-5">
 
-    <MudText Typo="Typo.h3" GutterBottom="true">Hello, world!</MudText>
+    <MudText Typo="Typo.h3" GutterBottom="true">
+        Hello ::
+        <AuthorizeView>
+            <Authorized>
+                @context.User.Identity?.Name
+            </Authorized>
+            <NotAuthorized>
+                World
+            </NotAuthorized>
+        </AuthorizeView>
+        !!
+    </MudText>
     <MudText Class="mb-8">Welcome to your new app, powered by MudBlazor!</MudText>
     <MudAlert Severity="Severity.Normal">You can find documentation and examples on our website here:
         <MudLink Href="https://mudblazor.com" Typo="Typo.body2" Color="Color.Inherit">

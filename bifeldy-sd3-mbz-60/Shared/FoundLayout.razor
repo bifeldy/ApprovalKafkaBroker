@@ -7,6 +7,7 @@
 
 @inject IJSRuntime _js
 @inject NavigationManager _nm
+@inject IHttpContextAccessor _hca
 
 @inject ILogger<FoundLayout> _logger
 @inject IApplicationService _app
@@ -27,7 +28,7 @@
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
         <MudDrawerHeader Class="mud-theme-primary" Style="align-items: center;">
-                <MudText Typo="Typo.h6">@_appName</MudText>
+            <MudText Typo="Typo.h6">@_appName</MudText>
         </MudDrawerHeader>
         <NavMenu />
     </MudDrawer>
@@ -38,7 +39,7 @@
         </MudText>
         <MudSpacer />
         <MudText>
-            <small>@_kodeDc</small>
+            <small>@_clientIp - @_kodeDc</small>
         </MudText>
     </MudAppBar>
 </MudLayout>
@@ -57,13 +58,15 @@
 @code {
 
     string _appName = string.Empty;
+    string _clientIp = string.Empty;
     string _kodeDc = string.Empty;
-    string _pageTitle = "Index";
+    string _pageTitle = string.Empty;
 
     bool _drawerOpen = true;
 
     protected override async void OnInitialized() {
         _nm.LocationChanged += OnLocationChanged;
+        _clientIp = _hca.HttpContext?.Connection.RemoteIpAddress.ToString();
         _kodeDc = await _generalRepo.GetKodeDc(); ;
         _appName = _app.AppName.Substring(0, 10) + "... - " + _kodeDc;
     }

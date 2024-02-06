@@ -9,7 +9,7 @@ using bifeldy_sd3_lib_60.Models;
 using bifeldy_sd3_mbz_60.Models;
 using bifeldy_sd3_mbz_60.Services;
 
-namespace bifeldy_sd3_wapi_31_new.Controllers {
+namespace bifeldy_sd3_mbz_60.Controllers {
 
     [ApiController]
     [Route("[controller]")]
@@ -21,8 +21,8 @@ namespace bifeldy_sd3_wapi_31_new.Controllers {
         private readonly WeatherForecastService _wfs;
 
         public WeatherForecastController(
-            IOptions<EnvVar> envVar,
             ILogger<WeatherForecastController> logger,
+            IOptions<EnvVar> envVar,
             IOraPg orapg,
             WeatherForecastService wfs
         ) {

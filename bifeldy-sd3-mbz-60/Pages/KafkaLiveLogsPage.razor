@@ -1,4 +1,5 @@
 ﻿@page "/kafka-live-logs"
+@attribute [Authorize(Roles = "USER")]
 
 @implements IDisposable
 
@@ -55,8 +56,8 @@
     //
     // Ngikut sama yang ada di Program.cs
     //
-    // Bifeldy.AddKafkaConsumerBackground("172.31.2.122:9092", "bias_uji_coba");
-    // private static string KAFKA_CONSUMER_NAME = $"KAFKA_CONSUMER_172.31.2.122:9092#{"bias_uji_coba".ToUpper()}";
+    // Bifeldy.AddKafkaConsumerBackground("127.0.0.1:9092", "bias_uji_coba");
+    // private static string KAFKA_CONSUMER_NAME = $"KAFKA_CONSUMER_127.0.0.1:9092#{"bias_uji_coba".ToUpper()}";
     //
     // Atau ambil yang di appsettings.json
     //
