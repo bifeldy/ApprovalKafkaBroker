@@ -19,14 +19,14 @@
 <MudSnackbarProvider />
 
 <MudLayout>
-    <MudAppBar Elevation="0">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" Class="pa-1" />
-        <MudText Class="ml-3">@(_pageTitle ?? _app.AppName)</MudText>
+    <MudAppBar Elevation="1" Dense="true" DisableGutters="true">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" Class="ml-1"/>
+        <MudText>@(_pageTitle ?? _app.AppName)</MudText>
         <MudSpacer />
         <MudIconButton Icon="@Icons.Custom.Brands.MudBlazor" Color="Color.Inherit" Href="https://mudblazor.com/" Target="_blank" />
         <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Href="https://github.com/MudBlazor/MudBlazor/" Target="_blank" />
     </MudAppBar>
-    <MudDrawer @bind-Open="_drawerOpen" Elevation="1" Variant="@DrawerVariant.Mini" OpenMiniOnHover="true" ClipMode="@DrawerClipMode.Docked">
+    <MudDrawer @bind-Open="_drawerOpen" Elevation="1" Variant="@DrawerVariant.Mini" OpenMiniOnHover="true" ClipMode="@DrawerClipMode.Always">
         <MudDrawerHeader Class="mud-theme-dark pa-4" Style="align-items: center;">
             <MudIcon Icon="@Icons.Material.Filled.PersonPin" Title="User" />
             <!--
@@ -48,9 +48,9 @@
         <NavMenu />
     </MudDrawer>
     <MudMainContent Class="mb-8">@Body</MudMainContent>
-        <MudAppBar Bottom="true" Elevation="0" Dense="true" Style="max-height: 32px;">
-            <MudText>
-                <small>@_app.AppName - v@_app.AppVersion</small>
+    <MudAppBar Bottom="true" Elevation="1" Dense="true" Style="max-height: 32px;" DisableGutters="true" Class="px-2">
+        <MudText>
+            <small>@_app.AppName - v@_app.AppVersion</small>
         </MudText>
         <MudSpacer />
         <MudText>
