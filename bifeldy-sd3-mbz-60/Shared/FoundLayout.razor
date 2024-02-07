@@ -10,6 +10,7 @@
 @inject IHttpContextAccessor _hca
 
 @inject ILogger<FoundLayout> _logger
+@inject IGlobalService _gs
 @inject IApplicationService _app
 @inject IGeneralRepository _generalRepo
 
@@ -60,16 +61,6 @@
 </MudLayout>
 
 
-<script>
-    function getDocumentTitle() {
-        return document.title;
-    }
-    function setDocumentTitle(headTitle) {
-        return document.title = headTitle;
-    }
-</script>
-
-
 @code {
 
     string _clientIp = string.Empty;
@@ -80,8 +71,8 @@
 
     protected override async void OnInitialized() {
         _nm.LocationChanged += OnLocationChanged;
-        _clientIp = _hca.HttpContext?.Connection.RemoteIpAddress.ToString();
         _kodeDc = await _generalRepo.GetKodeDc();
+        _clientIp = _gs.CleanIpOrigin(_hca.HttpContext?.Connection.RemoteIpAddress.ToString());
     }
 
     public void Dispose() {
