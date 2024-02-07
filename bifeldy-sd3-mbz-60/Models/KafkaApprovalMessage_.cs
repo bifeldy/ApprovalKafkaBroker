@@ -2,7 +2,9 @@
 
     public class KafkaApprovalMessageHeader {
         public string NO_DOC { get; set; }
+        public int NO_REF_DOC { get; set; }
         public DateTime? TGL_DOC { get; set; }
+        public DateTime? TGL_REF_DOC { get; set; }
         public DateTime? TGL_REQ { get; set; }
         public string NAMA_PROGRAM { get; set; }
         public string NAMA_FITUR { get; set; }

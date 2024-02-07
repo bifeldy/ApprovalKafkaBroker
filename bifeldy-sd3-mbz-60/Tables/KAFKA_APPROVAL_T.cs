@@ -8,7 +8,9 @@ namespace bifeldy_sd3_mbz_60.Tables {
         public string KODE_DC { get; set; }
         // --
         [Key] public string HEADER_NO_DOC { get; set; }
+        public int HEADER_NO_REF_DOC { get; set; }
         public DateTime? HEADER_TGL_DOC { get; set; }
+        public DateTime? HEADER_TGL_REF_DOC { get; set; }
         public DateTime? HEADER_TGL_REQ { get; set; }
         [Key] public string HEADER_NAMA_PROGRAM { get; set; }
         [Key] public string HEADER_NAMA_FITUR { get; set; }

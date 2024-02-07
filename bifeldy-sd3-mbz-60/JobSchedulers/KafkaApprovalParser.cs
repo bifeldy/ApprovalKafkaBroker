@@ -43,14 +43,16 @@ namespace bifeldy_sd3_mbz_60.JobSchedulers {
                 string topicName = "web_approval_" + kodeDc;
                 List<KAFKA_CONSUMER_AUTO_LOG> ls = await _orapg.Set<KAFKA_CONSUMER_AUTO_LOG>().Where(
                     kcal => kcal.TPC == topicName
-                ).ToListAsync();
+                ).OrderBy(kcal => kcal.OFFS).ToListAsync();
                 foreach (KAFKA_CONSUMER_AUTO_LOG l in ls) {
                     KafkaApprovalMessageHeader kamh = _converter.JsonToObject<KafkaApprovalMessageHeader>(l.VAL);
                     KAFKA_APPROVAL_T kat = new KAFKA_APPROVAL_T {
                         KODE_DC = kodeDc,
                         // --
                         HEADER_NO_DOC = kamh.NO_DOC,
+                        HEADER_NO_REF_DOC = kamh.NO_REF_DOC,
                         HEADER_TGL_DOC = kamh.TGL_DOC,
+                        HEADER_TGL_REF_DOC = kamh.TGL_REF_DOC,
                         HEADER_TGL_REQ = kamh.TGL_REQ,
                         HEADER_NAMA_PROGRAM = kamh.NAMA_PROGRAM,
                         HEADER_NAMA_FITUR = kamh.NAMA_FITUR,
@@ -75,14 +77,14 @@ namespace bifeldy_sd3_mbz_60.JobSchedulers {
                     }
                     catch (Exception e) {
                         _orapg.Set<KAFKA_APPROVAL_T>().Remove(kat);
-                        _logger.LogError($"[{_context.Scheduler.SchedulerName}_FAIL] ⌚ {e.Message}");
+                        _logger.LogError($"[{_context.Scheduler.SchedulerName}_DATA_FAIL] ⌚ {e.Message}");
                     }
                     try {
                         _orapg.Set<KAFKA_CONSUMER_AUTO_LOG>().Remove(l);
                         await _orapg.SaveChangesAsync();
                     }
                     catch (Exception e) {
-                        _logger.LogError($"[{_context.Scheduler.SchedulerName}_FAIL] ⌚ {e.Message}");
+                        _logger.LogError($"[{_context.Scheduler.SchedulerName}_LOG_FAIL] ⌚ {e.Message}");
                     }
                 }
             }
