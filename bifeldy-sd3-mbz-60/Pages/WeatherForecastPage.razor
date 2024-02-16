@@ -1,12 +1,13 @@
 ﻿@page "/weather-forecast"
 
 @using bifeldy_sd3_mbz_60.Models
+@using bifeldy_sd3_mbz_60.Repositories
 @using bifeldy_sd3_mbz_60.Services
 
-@inject WeatherForecastService _wfs
+@inject IWeatherForecastRepository _wfRepo
 
 
-<PageTitle>Weather forecast</PageTitle>
+<PageTitle>Weather Forecast</PageTitle>
 
 <MudPaper Square="true" Class="px-0" Style="background: yellow; height: 64px;" />
 
@@ -54,7 +55,7 @@
                 </MudTd>
             </RowTemplate>
             <PagerContent>
-                <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+                <MudTablePager PageSizeOptions="new int[]{ 50, 100 }" />
             </PagerContent>
         </MudTable>
     }
@@ -67,7 +68,7 @@
     private WeatherForecast[] forecasts;
 
     protected override async Task OnInitializedAsync() {
-        forecasts = await _wfs.GetForecastAsync(DateTime.Now);
+        forecasts = await _wfRepo.GetForecastAsync();
     }
 
 }
