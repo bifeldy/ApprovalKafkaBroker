@@ -22,7 +22,7 @@
 <MudLayout>
     <MudAppBar Elevation="1" Dense="true" DisableGutters="true">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" Class="ml-1" />
-        <MudText>@_app.AppName</MudText>
+        <MudText>@_app.AppName ~ @_kodeDc</MudText>
             <MudSpacer />
             <MudIconButton Icon="@Icons.Custom.Brands.MudBlazor" Color="Color.Inherit" Href="https://mudblazor.com/" Target="_blank" />
             <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Href="https://github.com/MudBlazor/MudBlazor/" Target="_blank" />
@@ -72,6 +72,7 @@
         _nm.LocationChanged += OnLocationChanged;
         _kodeDc = await _generalRepo.GetKodeDc();
         _clientIp = _gs.CleanIpOrigin(_hca.HttpContext?.Connection.RemoteIpAddress.ToString());
+        base.StateHasChanged();
     }
 
     public void Dispose() {
